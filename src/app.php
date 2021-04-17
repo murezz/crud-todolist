@@ -38,3 +38,28 @@ function tambah($data)
 
     return mysqli_affected_rows($conn);
 }
+
+function edit($data)
+{
+
+    global $conn;
+
+    $id_barang = htmlspecialchars($data['id_barang']);
+    $nama = htmlspecialchars($data['nama_barang']);
+    $foto = $_FILES['foto_barang']['name'];
+    $file = $_FILES['foto_barang']['tmp_name'];
+    $harga = htmlspecialchars($data['harga']);
+    $id_user = htmlspecialchars($data['id_user']);
+
+    mysqli_query($conn, "UPDATE barang SET
+                        nama_barang = '$nama',
+                        foto_barang = '$foto',
+                        harga = '$harga',
+                        id_user = '$id_user'
+                        WHERE id_barang = '$id_barang'
+                            ");
+
+    move_uploaded_file($file, "../assets/foto" . $foto);
+
+    return mysqli_affected_rows($conn);
+}

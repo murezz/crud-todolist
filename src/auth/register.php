@@ -10,7 +10,7 @@ if (isset($_POST['submit'])) {
     if (register($_POST) > 0) {
         header("location:login.php");
     } else {
-        echo mysqli_error($conn);
+        $error = true;
     }
 }
 
@@ -22,6 +22,14 @@ if (isset($_POST['submit'])) {
             <h5 class="card-title text-center">Registrasi</h5>
         </div>
         <div class="card-body">
+
+            <?php if (isset($error)) : ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Maaf registrasi akun gagal
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <form action="" method="post" enctype="multipart/form-data">
                 <label for="Nama Lengkap" class="form-label">Nama Lengkap</label>
                 <input type="text" name="nama" class="form-control mb-3" id="Nama Lengkap">

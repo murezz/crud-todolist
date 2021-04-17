@@ -2,6 +2,11 @@
 
 session_start();
 
+if (isset($_SESSION['login'])) {
+    header("location: ../index.php");
+    exit;
+}
+
 $title = 'Login';
 require '../layouts/header.php';
 
@@ -22,7 +27,7 @@ if (isset($_POST['submit'])) {
 
         header("location:../index.php");
     } else {
-        echo mysqli_error($conn);
+        $error = true;
     }
 }
 
@@ -34,6 +39,14 @@ if (isset($_POST['submit'])) {
             <h5 class="card-title text-center">Login</h5>
         </div>
         <div class="card-body">
+
+            <?php if (isset($error)) : ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Maaf email atau password anda salah
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <form action="" method="post">
                 <label for="email" class="form-label">Email</label>
                 <input type="text" name="email" class="form-control mb-3" id="email">

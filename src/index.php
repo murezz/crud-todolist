@@ -9,8 +9,8 @@ if (!isset($_SESSION['login'])) {
 
 $title = 'Crud PHP';
 require 'layouts/header.php';
-
 require 'app.php';
+require 'layouts/navbar.php';
 
 $data = $_SESSION['email'];
 
@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
     if (tambah($_POST) > 0) {
         header("location:index.php");
     } else {
-        $failed = true;
+        $error = true;
     }
 }
 
@@ -80,6 +80,14 @@ $barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN user ON barang.id
         <?php endwhile; ?>
 
         <div class="card-body">
+
+            <?php if (isset($error)) : ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Maaf gagal untuk menambah barang
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <table class="table text-center">
                 <thead>
                     <tr>
@@ -87,6 +95,7 @@ $barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN user ON barang.id
                         <th scope="col">Nama</th>
                         <th scope="col">Foto</th>
                         <th scope="col">Harga</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -97,6 +106,10 @@ $barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN user ON barang.id
                             <td><?= $row['nama_barang']; ?></td>
                             <td><img src="../assets/foto/<?= $row['foto_barang']; ?>" width="50px" alt=""></td>
                             <td>Rp. <?= $row['harga']; ?></td>
+                            <td>
+                                <a href="edit.php?id_barang=<?= $row['id_barang'] ?>" class="badge bg-success text-decoration-none text-white">Edit</a> |
+                                <a href="hapus.php?id_barang=<?= $row['id_barang'] ?>" class="badge bg-danger text-decoration-none text-white">Hapus</a>
+                            </td>
                         </tr>
                         <?php $i++; ?>
                     <?php endwhile; ?>
@@ -105,7 +118,5 @@ $barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN user ON barang.id
         </div>
     </div>
 </div>
-
-
 
 <?php require 'layouts/footer.php'; ?>
